@@ -1,6 +1,6 @@
 "use server";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
-import { QuoteResponse } from "@jup-ag/api";
+import { QuoteResponse, SwapRequestPrioritizationFeeLamportsPriorityLevelWithMaxLamportsPriorityLevelEnum } from "@jup-ag/api";
 import { createJupiterApiClient } from "@jup-ag/api";
 import { Mint } from "@solana/spl-token";
 import { Config } from "@/components/swap-interface";
@@ -64,7 +64,7 @@ async function executeSwap(quoteResponse: QuoteResponse, wallet: AnchorWallet, c
 				prioritizationFeeLamports: {
 					priorityLevelWithMaxLamports: {
 						maxLamports: Number(config.maxFee),
-						priorityLevel: config.priority,
+						priorityLevel: config.priority as SwapRequestPrioritizationFeeLamportsPriorityLevelWithMaxLamportsPriorityLevelEnum,
 					},
 				},
 			},

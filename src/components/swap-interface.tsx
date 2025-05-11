@@ -21,6 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { SwapRequestPrioritizationFeeLamportsPriorityLevelWithMaxLamportsPriorityLevelEnum } from '@jup-ag/api';
 
 export const sol = {
   "id": "So11111111111111111111111111111111111111112",
@@ -443,7 +444,8 @@ interface SwapInterfaceProps {
   className?: string;
 };
 const slippageOptions = ['0.1%', '0.5%', '1%'];
-const priorityOptions = ['Low', 'Medium', 'High'];
+const priorityOptions = ['medium', 'high', 'veryHigh'] as SwapRequestPrioritizationFeeLamportsPriorityLevelWithMaxLamportsPriorityLevelEnum[]
+
 const DEFAULT_CONFIG = {
   maxSlippage: slippageOptions[1],
   priority: priorityOptions[1],
@@ -829,14 +831,12 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
 
 export default SwapInterface;
 
-type ConfigProps = {
-  maxSlippage: string;
-  priority: string;
-  maxFee: string;
-}
-export function SettingsPopover({ config, setConfig }: { config: ConfigProps, setConfig: (config: ConfigProps) => void }) {
-
-
+// type ConfigProps = {
+//   maxSlippage: string;
+//   priority: SwapRequestPrioritizationFeeLamportsPriorityLevelWithMaxLamportsPriorityLevelEnum;
+//   maxFee: string;
+// }
+export function SettingsPopover({ config, setConfig }: { config: Config, setConfig: (config: Config) => void }) {
 
   return (
     <Popover>
