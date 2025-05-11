@@ -7,7 +7,7 @@ import TokenDisplay from './token-display';
 import TokenSelectModal from './token-select-modal'; // Assuming this component accepts a 'tokens' prop now
 // -----------------------
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { AnchorProvider } from "@project-serum/anchor";
 import { submitIntent } from '@/lib/submitIntent';
 import { getAssociatedTokenAddress } from '@solana/spl-token';
@@ -21,15 +21,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-// --- Define Token Interface ---
-// export interface Token {
-//   symbol: string;
-//   name: string;
-//   logo: string;
-//   mintAddress: string; // Added: Mint address as string
-//   decimals: number;    // Added: Token decimals
-// }
-const sol = {
+
+export const sol = {
   "id": "So11111111111111111111111111111111111111112",
   "name": "Wrapped SOL",
   "symbol": "SOL",
@@ -131,7 +124,7 @@ const sol = {
   ],
   "updatedAt": "2025-05-05T21:55:22.173401082Z"
 };
-const usdc = {
+export const usdc = {
   "id": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
   "name": "USD Coin",
   "symbol": "USDC",
@@ -233,6 +226,7 @@ const usdc = {
   ],
   "updatedAt": "2025-05-05T21:50:25.173880359Z"
 };
+
 export type Token = typeof sol | typeof usdc;
 
 // --- Define Common Solana Tokens ---
@@ -463,16 +457,12 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
   const [buyAmount, setBuyAmount] = useState(''); // Note: Buy amount is often calculated, not input directly in simple swaps
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [priceImpact, setPriceImpact] = useState<string>('0.00%');
   const [isPriceLoading, setIsPriceLoading] = useState(false);
   const [fromTokenBalance, setFromTokenBalance] = useState<string>('0.00');
-  const [tokenList, setTokenList] = useState<Token[]>([]);
-  const [toTokenBalance, setToTokenBalance] = useState<string>('0.00');
   const [isBalanceLoading, setIsBalanceLoading] = useState<boolean>(false);
   const [config, setConfig] = useState<Config>(DEFAULT_CONFIG);
   const wallet = useAnchorWallet();
   const publicKey = wallet?.publicKey;
-
   // Token states - Initialize with default Solana tokens
   const [fromToken, setFromToken] = useState<Token>(SOLANA_DEFAULT_TOKENS[0]); // Default to SOL
   const [toToken, setToToken] = useState<Token>(SOLANA_DEFAULT_TOKENS[1]); // Default to USDC
@@ -563,10 +553,9 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
       if (!wallet || !fromToken || !toToken) return;
 
       const fromBalance = await fetchTokenBalance(fromToken);
-      const toBalance = await fetchTokenBalance(toToken);
+      // const toBalance = await fetchTokenBalance(toToken);
 
       setFromTokenBalance(fromBalance);
-      setToTokenBalance(toBalance);
     };
 
     updateBalances();
@@ -823,8 +812,6 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
             isOpen={isSelectingFrom}
             onClose={() => setIsSelectingFrom(false)}
             onSelect={handleFromTokenSelect}
-            tokens={tokenList}
-            currentToken={toToken}
           />
         )}
 
@@ -833,8 +820,6 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
             isOpen={isSelectingTo}
             onClose={() => setIsSelectingTo(false)}
             onSelect={handleToTokenSelect}
-            tokens={tokenList}
-            currentToken={fromToken}
           />
         )}
       </div>
@@ -844,8 +829,12 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
 
 export default SwapInterface;
 
-
-export function SettingsPopover({ config, setConfig }: { config: any, setConfig: (config: any) => void }) {
+type ConfigProps = {
+  maxSlippage: string;
+  priority: string;
+  maxFee: string;
+}
+export function SettingsPopover({ config, setConfig }: { config: ConfigProps, setConfig: (config: ConfigProps) => void }) {
 
 
 

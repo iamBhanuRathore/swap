@@ -3,6 +3,7 @@ import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Token } from './swap-interface';
+import Image from 'next/image';
 // import { Token } from './token-select-modal';
 
 interface TokenDisplayProps {
@@ -43,7 +44,7 @@ const TokenDisplay: React.FC<TokenDisplayProps> = ({
     >
       <div className="h-6 w-6 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden">
         {token?.icon ? (
-          <img src={token.icon} alt={token?.symbol} className="h-full w-full object-cover" />
+          <Image src={token.icon} alt={token?.symbol} className="h-full w-full object-cover" />
         ) : (
           <span className="text-xs font-bold">?</span>
         )}

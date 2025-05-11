@@ -1,7 +1,7 @@
 
 "use client";
 // import React, { useState } from "react";
-import { Search, Menu } from "lucide-react";
+import {  Menu } from "lucide-react";
 import Logo from "./logo";
 import { cn } from "@/lib/utils";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";

@@ -1,16 +1,11 @@
 "use server";
-
-import { Connection, PublicKey } from "@solana/web3.js";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { QuoteResponse } from "@jup-ag/api";
 import { createJupiterApiClient } from "@jup-ag/api";
-import { getMint, Mint } from "@solana/spl-token";
+import { Mint } from "@solana/spl-token";
 import { Config } from "@/components/swap-interface";
 class JupiterError extends Error {
-	constructor(
-		message: string,
-		public readonly details?: unknown
-	) {
+	constructor(message: string, public readonly details?: unknown) {
 		super(message);
 		this.name = "JupiterError";
 	}

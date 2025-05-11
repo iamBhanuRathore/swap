@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { Token } from './swap-interface';
 import { ScrollArea } from './ui/scroll-area';
 import { useDebouncedState } from './use-debounced';
+import Image from 'next/image';
 // Use the same Token interface as SwapInterface
 // If Token is defined in a shared location, import it instead.
 // Otherwise, define it consistently here.
@@ -16,8 +17,6 @@ interface TokenSelectModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (token: Token) => void;
-  tokens: Token[]; // Accept the list of tokens from parent
-  currentToken?: Token | null; // Accept the token currently selected in the *other* field (optional)
 }
 
 
@@ -26,8 +25,6 @@ const TokenSelectModal: React.FC<TokenSelectModalProps> = ({
   isOpen,
   onClose,
   onSelect,
-  tokens,
-  currentToken,
 }) => {
   const [loading, setLoading] = useState(false);
   const [filteredTokens, setFilteredTokens] = useState<Token[]>([]);
@@ -71,7 +68,7 @@ const TokenSelectModal: React.FC<TokenSelectModalProps> = ({
                     <div className="flex-shrink-0">
                       <div className="rounded-full bg-neutral-800">
                         <span className="relative">
-                          <img src={token.icon} alt={token.symbol} width="32" height="32" className="rounded-full object-cover max-w-8 max-h-8" />
+                          <Image src={token.icon} alt={token.symbol} width="32" height="32" className="rounded-full object-cover max-w-8 max-h-8" />
                         </span></div>
                     </div>
                     <div className="min-w-0 flex-1">
