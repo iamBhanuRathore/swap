@@ -1,10 +1,7 @@
 "use server";
-import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { QuoteResponse, SwapRequestPrioritizationFeeLamportsPriorityLevelWithMaxLamportsPriorityLevelEnum } from "@jup-ag/api";
 import { createJupiterApiClient } from "@jup-ag/api";
-import { getMint, Mint } from "@solana/spl-token";
 import { Config } from "@/components/swap-interface";
-import { Connection, PublicKey } from "@solana/web3.js";
 
 class JupiterError extends Error {
 	constructor(message: string, public readonly details?: unknown) {
