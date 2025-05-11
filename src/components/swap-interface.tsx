@@ -604,7 +604,19 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
       const { success, txid } = await submitIntent(inputMint.toBase58(), outputMint.toBase58(), sellAmountFloat, connection, wallet, config);
       console.log(txid);
       console.log(`https://explorer.solana.com/tx/${txid}`);
-      toast(`Swap successful, tx: https://explorer.solana.com/tx/${txid}`);
+      toast.success(
+        <div style={{ color: 'white' }}>
+          Swap successful!{' '}
+          <a
+            href={`https://explorer.solana.com/tx/${txid}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'white', textDecoration: 'underline' }}
+          >
+            View Transaction
+          </a>
+        </div>
+      );
       // Update price impact and buy amount based on quote
       if (success) {
         // setPriceImpact(quote.priceImpactPct);
