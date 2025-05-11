@@ -95,7 +95,6 @@ export async function submitSwap(
 		const result = await executeSwap(quoteResponse, walletPublicKey, config);
 		return result;
 	} catch (error) {
-		``;
 		console.error("Error submitting swap intent:", error);
 		return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
 	}
