@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
 		};
 		return config;
 	},
+	images: {
+		remotePatterns: [
+			{
+				hostname: "raw.githubusercontent.com",
+			},
+		],
+	},
 };
 
 export default nextConfig;

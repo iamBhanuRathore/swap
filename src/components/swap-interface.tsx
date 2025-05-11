@@ -231,7 +231,6 @@ export const usdc = {
 export type Token = typeof sol | typeof usdc;
 
 // --- Define Common Solana Tokens ---
-// (Replace placeholders and add more tokens as needed)
 const SOLANA_DEFAULT_TOKENS: Token[] = [
   {
     "id": "So11111111111111111111111111111111111111112",

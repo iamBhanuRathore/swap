@@ -44,7 +44,7 @@ const TokenDisplay: React.FC<TokenDisplayProps> = ({
     >
       <div className="h-6 w-6 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden">
         {token?.icon ? (
-          <Image src={token.icon} alt={token?.symbol} className="h-full w-full object-cover" />
+          <Image width={24} height={24} src={token.icon} alt={token?.symbol} className=" object-cover" />
         ) : (
           <span className="text-xs font-bold">?</span>
         )}
