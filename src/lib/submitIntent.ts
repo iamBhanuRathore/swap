@@ -13,7 +13,18 @@ export const submitIntent = async (
 	config: Config
 ) => {
 	const inputMintInfo = await getMint(connection, new PublicKey(inputMintStr));
-	const result = await submitSwap(inputMintStr, inputMintInfo, outputMintStr, amountInNormalUnit, wallet, config);
+	const inputDecimals = inputMintInfo.decimals;
+	// Pass string representations to the server function
+	const result = await submitSwap(
+		inputMintStr,
+		// inputMintInfo,
+		inputDecimals,
+		outputMintStr,
+		amountInNormalUnit,
+		wallet.publicKey.toBase58(),
+		config
+		// connection
+	);
 	if (!result.success) {
 		throw new Error("Failed to submit swap");
 	}

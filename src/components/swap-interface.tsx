@@ -22,6 +22,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { SwapRequestPrioritizationFeeLamportsPriorityLevelWithMaxLamportsPriorityLevelEnum } from '@jup-ag/api';
+import { toast } from 'sonner';
 
 export const sol = {
   "id": "So11111111111111111111111111111111111111112",
@@ -603,6 +604,7 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
       const { success, txid } = await submitIntent(inputMint.toBase58(), outputMint.toBase58(), sellAmountFloat, connection, wallet, config);
       console.log(txid);
       console.log(`https://explorer.solana.com/tx/${txid}`);
+      toast(`Swap successful, tx: https://explorer.solana.com/tx/${txid}`);
       // Update price impact and buy amount based on quote
       if (success) {
         // setPriceImpact(quote.priceImpactPct);

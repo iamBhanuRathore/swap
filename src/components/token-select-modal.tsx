@@ -88,9 +88,13 @@ const TokenSelectModal: React.FC<TokenSelectModalProps> = ({
                         </div>
                       </div><p className="text-xxs text-neutral-500">{token.name}</p><div className="text-xxs font-semibold text-neutral-600"><p className="whitespace-nowrap" title={token.id}>{token.id.slice(0, 4)}...{token.id.slice(-4)}</p>
                       </div>
-                    </div><div className="flex h-full flex-col justify-start gap-y-1 pt-2 text-right text-xs font-medium text-neutral-200"><span translate="no">0.00008297</span><p className="text-neutral-500">$0.15</p><div className="flex justify-end gap-x-1">
                     </div>
-                    </div>
+                    {/* <div className="flex h-full flex-col justify-start gap-y-1 pt-2 text-right text-xs font-medium text-neutral-200">
+                      <span translate="no">0.00008297</span>
+                      <p className="text-neutral-500">$0.15</p>
+                      <div className="flex justify-end gap-x-1">
+                      </div>
+                    </div> */}
                   </CommandItem>
                 ))}
             </CommandGroup>

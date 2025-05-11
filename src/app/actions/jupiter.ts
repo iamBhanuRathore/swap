@@ -2,8 +2,10 @@
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { QuoteResponse, SwapRequestPrioritizationFeeLamportsPriorityLevelWithMaxLamportsPriorityLevelEnum } from "@jup-ag/api";
 import { createJupiterApiClient } from "@jup-ag/api";
-import { Mint } from "@solana/spl-token";
+import { getMint, Mint } from "@solana/spl-token";
 import { Config } from "@/components/swap-interface";
+import { Connection, PublicKey } from "@solana/web3.js";
+
 class JupiterError extends Error {
 	constructor(message: string, public readonly details?: unknown) {
 		super(message);
@@ -12,20 +14,23 @@ class JupiterError extends Error {
 }
 
 const JUPITER_CONFIG = {
-	basePath: "https://lite-api.jup.ag/swap/v1",
+	basePath: "https://lite-api.jup.ag",
 	slippageBps: 100, // 1% slippage
 	priorityLevel: "medium" as const,
 	maxLamports: 10000,
 } as const;
+
 const jupiterApi = createJupiterApiClient({
 	basePath: JUPITER_CONFIG.basePath,
 	// basePath: "https://quote-api.jup.ag/v6",
 });
 
-const getJupiterQuote = async (inputMintStr: string, inputMintInfo: Mint, outputMintStr: string, amountInNormalUnit: number) => {
-	console.log(`Getting Jupiter quote for ${inputMintStr} -> ${outputMintStr} (Amount: ${amountInNormalUnit.toString()})`);
+const getJupiterQuote = async (inputMintStr: string, inputDecimals: number, outputMintStr: string, amountInNormalUnit: number) => {
+	console.log(
+		`Getting Jupiter quote for ${inputMintStr} -> ${outputMintStr} (Amount: ${amountInNormalUnit.toString()}), decimals: ${inputDecimals}`
+	);
 	try {
-		const amount = Number(amountInNormalUnit) * 10 ** inputMintInfo.decimals;
+		const amount = Number(amountInNormalUnit) * 10 ** inputDecimals;
 		if (amount <= 0) {
 			throw new JupiterError("Input amount must be greater than zero");
 		}
@@ -43,6 +48,7 @@ const getJupiterQuote = async (inputMintStr: string, inputMintInfo: Mint, output
 		}
 		return quoteResponse;
 	} catch (error) {
+		console.error("Error fetching Jupiter quote:", error);
 		if (error instanceof JupiterError) {
 			throw error;
 		}
@@ -50,12 +56,12 @@ const getJupiterQuote = async (inputMintStr: string, inputMintInfo: Mint, output
 	}
 };
 
-async function executeSwap(quoteResponse: QuoteResponse, wallet: AnchorWallet, config: Config) {
+async function executeSwap(quoteResponse: QuoteResponse, walletPublicKey: string, config: Config) {
 	try {
 		// const txid = await executeJupiterSwap(quoteResponse, connection, wallet);
 		const swapResult = await jupiterApi.swapPost({
 			swapRequest: {
-				userPublicKey: wallet.publicKey.toString(),
+				userPublicKey: walletPublicKey,
 				quoteResponse,
 				wrapAndUnwrapSol: true, // Needed for SOL swaps
 				asLegacyTransaction: true, // Use legacy TX (easier for testing)
@@ -78,17 +84,21 @@ async function executeSwap(quoteResponse: QuoteResponse, wallet: AnchorWallet, c
 
 export async function submitSwap(
 	inputMintStr: string,
-	inputMintInfo: Mint,
+	// inputMintInfo: Mint,
+	inputDecimals: number,
 	outputMintStr: string,
 	amountInNormalUnit: number,
-	wallet: AnchorWallet,
+	walletPublicKey: string,
 	config: Config
+	// connection: Connection
 ) {
 	try {
-		const quoteResponse = await getJupiterQuote(inputMintStr, inputMintInfo, outputMintStr, amountInNormalUnit);
-		const result = await executeSwap(quoteResponse, wallet, config);
+		// const inputMintInfo = await getMint(connection, new PublicKey(inputMintStr));
+		const quoteResponse = await getJupiterQuote(inputMintStr, inputDecimals, outputMintStr, amountInNormalUnit);
+		const result = await executeSwap(quoteResponse, walletPublicKey, config);
 		return result;
 	} catch (error) {
+		``;
 		console.error("Error submitting swap intent:", error);
 		return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
 	}

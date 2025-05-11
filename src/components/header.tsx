@@ -1,11 +1,13 @@
 
 "use client";
 // import React, { useState } from "react";
-import {  Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import Logo from "./logo";
 import { cn } from "@/lib/utils";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Button } from "./ui/button";
+import { useEffect } from "react";
+import { useState } from "react";
 // import ClientOnly from "./client-only";
 
 interface HeaderProps {
@@ -14,6 +16,11 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
   // const [activeTab, setActiveTab] = useState("trade");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
 
 
@@ -70,7 +77,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         </div> */}
         {/* <ClientOnly> */}
         <div suppressHydrationWarning={true}>
-          <WalletMultiButton />
+          {isClient && (
+            <WalletMultiButton />
+          )}
         </div>
         {/* </ClientOnly> */}
         <Button variant="ghost" size="icon" className="md:hidden">
